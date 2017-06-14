@@ -1,0 +1,2 @@
+[Service]
+Environment={% if docker_http_proxy != "" %}"HTTP_PROXY={{ docker_http_proxy }}"{% endif %} {% if docker_http_proxy != "" %}"HTTPS_PROXY={{ docker_https_proxy }}"{% endif %} {% if docker_no_proxy != "" %}"NO_PROXY={{ docker_no_proxy }}"{% endif %}
