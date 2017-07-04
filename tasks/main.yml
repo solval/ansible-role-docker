@@ -1,17 +1,25 @@
 ---
 
-- name: Docker repo is present
-  get_url:
-    url: https://download.docker.com/linux/centos/docker-ce.repo
-    dest: /etc/yum.repos.d/docker-ce.repo
-    mode: 0644
-  environment: "{{ docker_proxy_env }}"
+- name: Remove official Docker repository
+  file:
+    path: /etc/yum.repos.d/docker-ce.repo
+    state: absent
   when: ansible_os_family == "RedHat"
   become: yes
   
-- name: Docker is installed
+- name: Remove official Docker
   package:
-    name: docker-ce
+    name: "{{ item }}"
+    state: absent
+  environment: "{{ docker_proxy_env }}"
+  become: yes
+  with_items:
+   - docker-ce
+   - docker-ce-selinux
+
+- name: Install old Docker
+  package:
+    name: docker
     state: present
   environment: "{{ docker_proxy_env }}"
   become: yes
