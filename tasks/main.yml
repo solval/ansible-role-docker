@@ -13,6 +13,7 @@
     state: absent
   environment: "{{ docker_proxy_env }}"
   become: yes
+  when: ansible_os_family == "RedHat"
   with_items:
    - docker-ce
    - docker-ce-selinux
@@ -21,6 +22,7 @@
   package:
     name: docker
     state: present
+  when: ansible_os_family == "RedHat"
   environment: "{{ docker_proxy_env }}"
   become: yes
 
@@ -29,6 +31,7 @@
     path: /etc/systemd/system/docker.service.d
     state: directory
     mode: 0755
+  when: ansible_os_family == "RedHat"
   become: yes
 
 - name: Proxy configuration is present
@@ -37,7 +40,9 @@
     dest: /etc/systemd/system/docker.service.d/proxy.conf
   notify:
     - restart docker
-  when: docker_http_proxy != "" or docker_https_proxy != "" or docker_no_proxy != ""
+  when:
+    - ansible_os_family == "RedHat"
+    - docker_http_proxy != "" or docker_https_proxy != "" or docker_no_proxy != ""
   become: yes
 
 - name: Docker daemon is enabled
@@ -45,4 +50,5 @@
     name: docker
     enabled: yes
     masked: no
+  when: ansible_os_family == "RedHat"
   become: yes
