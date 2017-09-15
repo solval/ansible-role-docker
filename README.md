@@ -2,6 +2,8 @@ Role Name
 =========
 
 Installs Docker Daemon and [optionally] configures HTTP proxy for the daemon.
+On RHEL family, OS provided Docker is installed.
+On Ubuntu, docker 1.12 is installed (the one recommended by Kubernetes community).
 
 Requirements
 ------------

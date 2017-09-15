@@ -1,0 +1,24 @@
+---
+
+- name: Remove official Docker repository
+  file:
+    path: /etc/yum.repos.d/docker-ce.repo
+    state: absent
+  become: yes
+  
+- name: Remove official Docker
+  package:
+    name: "{{ item }}"
+    state: absent
+  environment: "{{ docker_proxy_env }}"
+  become: yes
+  with_items:
+   - docker-ce
+   - docker-ce-selinux
+
+- name: Install Gold Docker
+  package:
+    name: docker
+    state: present
+  environment: "{{ docker_proxy_env }}"
+  become: yes

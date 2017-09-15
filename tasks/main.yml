@@ -1,54 +1,7 @@
 ---
 
-- name: Remove official Docker repository
-  file:
-    path: /etc/yum.repos.d/docker-ce.repo
-    state: absent
-  when: ansible_os_family == "RedHat"
-  become: yes
-  
-- name: Remove official Docker
-  package:
-    name: "{{ item }}"
-    state: absent
-  environment: "{{ docker_proxy_env }}"
-  become: yes
-  when: ansible_os_family == "RedHat"
-  with_items:
-   - docker-ce
-   - docker-ce-selinux
+- name: "Install Docker"
+  include: "install-{{ ansible_os_family|lower }}.yml"
 
-- name: Install old Docker
-  package:
-    name: docker
-    state: present
-  when: ansible_os_family == "RedHat"
-  environment: "{{ docker_proxy_env }}"
-  become: yes
-
-- name: Docker systemd custom directory is present
-  file:
-    path: /etc/systemd/system/docker.service.d
-    state: directory
-    mode: 0755
-  when: ansible_os_family == "RedHat"
-  become: yes
-
-- name: Proxy configuration is present
-  template:
-    src: proxy.conf.j2
-    dest: /etc/systemd/system/docker.service.d/proxy.conf
-  notify:
-    - restart docker
-  when:
-    - ansible_os_family == "RedHat"
-    - docker_http_proxy != "" or docker_https_proxy != "" or docker_no_proxy != ""
-  become: yes
-
-- name: Docker daemon is enabled
-  service:
-    name: docker
-    enabled: yes
-    masked: no
-  when: ansible_os_family == "RedHat"
-  become: yes
+- name: "Configure Docker"
+  include: "configure.yml"

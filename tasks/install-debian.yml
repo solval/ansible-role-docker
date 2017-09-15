@@ -1,0 +1,46 @@
+---
+
+- name: "Uninstall old Docker"
+  package:
+    name: "{{ item }}"
+    state: absent
+  with_items:
+    - "docker"
+    - "lxc-docker"
+  environment: "{{ docker_proxy_env }}"
+  become: yes
+
+- name: "Install apt SSL support packages"
+  package:
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - "apt-transport-https"
+    - "ca-certificates"
+    - "curl"
+    - "software-properties-common"
+  environment: "{{ docker_proxy_env }}"
+  become: yes
+
+- name: "Add dockerproject.org repo APT key"
+  apt_key:
+    id: 58118E89F3A912897C070ADBF76221572C52609D
+    keyserver: hkp://p80.pool.sks-keyservers.net:80
+    state: present
+  environment: "{{ docker_proxy_env }}"
+  become: yes
+
+- name: "Add dockerproject.org APT repository"
+  apt_repository:
+    repo: "deb https://apt.dockerproject.org/repo ubuntu-{{ ansible_distribution_release }} main"
+    state: present
+    update_cache: yes
+  environment: "{{ docker_proxy_env }}"
+  become: yes
+  
+- name: Install Gold Docker
+  package:
+    name: "docker-engine=1.12.6-0~ubuntu-{{ ansible_distribution_release }}"
+    state: present
+  environment: "{{ docker_proxy_env }}"
+  become: yes

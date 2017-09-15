@@ -1,0 +1,24 @@
+---
+
+- name: "Docker systemd custom directory is present"
+  file:
+    path: /etc/systemd/system/docker.service.d
+    state: directory
+    mode: 0755
+  become: yes
+
+- name: "Proxy configuration is present"
+  template:
+    src: proxy.conf.j2
+    dest: /etc/systemd/system/docker.service.d/proxy.conf
+  notify:
+    - restart docker
+  when: docker_http_proxy != "" or docker_https_proxy != "" or docker_no_proxy != ""
+  become: yes
+
+- name: "Docker daemon is enabled"
+  service:
+    name: docker
+    enabled: yes
+    masked: no
+  become: yes
