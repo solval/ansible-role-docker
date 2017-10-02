@@ -17,6 +17,7 @@ Role Variables
     docker_http_proxy: none
     docker_https_proxy: none
     docker_no_proxy: none
+    docker_insecure_registry: none
 
 The variables are optional. If they are not defined, the role will not configure proxy for the Docker daemon.
 

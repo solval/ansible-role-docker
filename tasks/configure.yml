@@ -16,6 +16,14 @@
   when: docker_http_proxy != "" or docker_https_proxy != "" or docker_no_proxy != ""
   become: yes
 
+- name: "Insecure Docker registry - RHEL"
+  lineinfile:
+    path: /etc/sysconfig/docker
+    regexp: '^INSECURE_REGISTRY='
+    line: "INSECURE_REGISTRY='{{ docker_insecure_registry }}'"
+  when: docker_insecure_registry is defined and ansible_os_family == 'RedHat'
+  become: yes
+
 - name: "Docker daemon is enabled"
   service:
     name: docker
