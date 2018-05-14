@@ -1,0 +1,6 @@
+- name: "Install docker"
+  package:
+    name: docker
+    state: present
+  environment: "{{ docker_proxy_env }}"
+  become: yes

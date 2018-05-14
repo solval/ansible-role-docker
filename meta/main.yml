@@ -1,7 +1,7 @@
 galaxy_info:
   author: Jakub Dlugolecki
   description: Installs Docker and optionally configures proxy settings for the daemon.
-  company: 
+  company:
   license: Apache
   min_ansible_version: 2.2.2
   platforms:
@@ -12,6 +12,9 @@ galaxy_info:
     versions:
     - trusty
     - xenial
+  - name: SLES
+    versions:
+    - 12
   galaxy_tags:
   - docker
   - proxy

@@ -1,5 +1,4 @@
 ---
-
 docker_http_proxy: ""
 docker_https_proxy: ""
 docker_no_proxy: ""

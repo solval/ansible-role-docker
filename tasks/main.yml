@@ -1,5 +1,4 @@
 ---
-
 - name: "Install Docker"
   include: "install-{{ ansible_os_family|lower }}.yml"
 

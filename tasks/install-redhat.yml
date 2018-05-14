@@ -1,12 +1,11 @@
 ---
-
-- name: Remove official Docker repository
+- name: "Remove official Docker repository"
   file:
     path: /etc/yum.repos.d/docker-ce.repo
     state: absent
   become: yes
-  
-- name: Remove official Docker
+
+- name: "Remove official Docker"
   package:
     name: "{{ item }}"
     state: absent
@@ -16,7 +15,7 @@
    - docker-ce
    - docker-ce-selinux
 
-- name: Install Gold Docker
+- name: "Install Gold Docker"
   package:
     name: docker
     state: present

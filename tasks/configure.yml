@@ -1,5 +1,4 @@
 ---
-
 - name: "Docker systemd custom directory is present"
   file:
     path: /etc/systemd/system/docker.service.d

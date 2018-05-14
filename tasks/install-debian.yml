@@ -1,5 +1,4 @@
 ---
-
 - name: "Uninstall old Docker"
   package:
     name: "{{ item }}"
@@ -37,8 +36,8 @@
     update_cache: yes
   environment: "{{ docker_proxy_env }}"
   become: yes
-  
-- name: Install Gold Docker
+
+- name: "Install Gold Docker"
   package:
     name: "docker-engine=1.12.6-0~ubuntu-{{ ansible_distribution_release }}"
     state: present
